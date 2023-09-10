@@ -1,23 +1,21 @@
-from sqlalchemy import create_engine
-from sqlalchemy.sql import text
-import random
-import string
-import os
-env_var = os.environ
 
-# SQLAlchemy >= 1.4 deprecated the use of `postgres://` in favor of `postgresql://`
-# for the database connection url
-database_url = env_var['DATABASE_URL'].replace("postgres://", "postgresql://")
+import asyncio
+import asyncpg
 
-engine = create_engine(database_url, echo=False)
+from app.db.repositories.users import UsersRepository
+from app.core.config import get_app_settings
 
-user_insert_statement = text("""INSERT INTO users(username, email, salt, bio, hashed_password, role) VALUES(:username, :email, :salt, :bio, :hashed_password, :role) ON CONFLICT DO NOTHING""")
+async def create_users():
+    SETTINGS = get_app_settings()
+    DATABASE_URL = SETTINGS.database_url.replace("postgres://", "postgresql://")
+    conn = await asyncpg.connect(DATABASE_URL)
+    usersRepository = UsersRepository(conn=conn)
 
-letters = string.ascii_lowercase
 
-with engine.connect() as con:
-    regularUser = {'username': 'regularUser', 'email':'regularUser@mail.com', 'salt': 'abc', 'bio': 'bio', 'hashed_password':'123456', 'role': 'user'}
-    con.execute(user_insert_statement, **regularUser)
+    await usersRepository.create_user(username="regularUser", password="123456", email="regularuser@gmail.com", role="user")
+    await usersRepository.create_user(username=f"adminUser", password="123456", email=f"adminuser@gmail.com", role="admin")
 
-    adminUser = {'username': 'adminUser', 'email':'adminUser@mail.com', 'salt': 'abc', 'bio': 'bio', 'hashed_password':'123456', 'role': 'admin'}
-    con.execute(user_insert_statement, **adminUser)
+    await conn.close()
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(create_users())
