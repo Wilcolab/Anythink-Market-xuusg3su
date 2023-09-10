@@ -15,9 +15,7 @@ class UsersQueriesMixin:
     async def get_user_by_username(
         self, conn: Connection, *, username: str
     ) -> [Record]: ...
-    async def get_all_users(
-        self, conn: Connection,
-    ) -> Record: ...
+    async def get_all_users(self, conn: Connection) -> [Record]:...
     async def create_new_user(
         self,
         conn: Connection,

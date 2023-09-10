@@ -13,7 +13,7 @@ FROM users
 WHERE email = :email
 LIMIT 1;
 
--- name: get-all-users^
+-- name: get-all-users
 SELECT id,
        username,
        email,
