@@ -50,6 +50,7 @@ async def login(
             bio=user.bio,
             image=user.image,
             token=token,
+            role=user.role
         ),
     )
 
