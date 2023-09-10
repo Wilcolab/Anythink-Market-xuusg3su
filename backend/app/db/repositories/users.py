@@ -25,6 +25,19 @@ class UsersRepository(BaseRepository):
         raise EntityDoesNotExist(
             "user with username {0} does not exist".format(username),
         )
+    
+
+    async def get_user_by_username(self, *, username: str) -> UserInDB:
+        user_row = await queries.get_user_by_username(
+            self.connection,
+            username=username,
+        )
+        if user_row:
+            return UserInDB(**user_row)
+
+        raise EntityDoesNotExist(
+            "user with username {0} does not exist".format(username),
+        )
 
     async def create_user(
         self,
