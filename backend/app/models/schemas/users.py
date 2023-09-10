@@ -21,7 +21,7 @@ class UserInUpdate(BaseModel):
     password: Optional[str] = None
     bio: Optional[str] = None
     image: Optional[HttpUrl] = None
-    admin: Optional[str] = None
+    role: Optional[str] = None
 
 
 class UserWithToken(User):

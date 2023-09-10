@@ -12,6 +12,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # one week
 
 
+
 def create_jwt_token(
     *,
     jwt_content: Dict[str, str],
