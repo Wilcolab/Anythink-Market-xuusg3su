@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 from fastapi import APIRouter, Body, Depends, HTTPException
 from starlette.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN
@@ -30,14 +30,15 @@ router = APIRouter()
 async def retrieve_all_users(
     user: User = Depends(get_current_user_authorizer()),
     users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
-) -> List[User]:
+) -> Dict[str, List[User]]:
     if user.role != UserRole.admin:
         raise HTTPException(                                                                                        
                 status_code=HTTP_403_FORBIDDEN,
                 detail=strings.UNAUTHORIZED,
             )
     users = await users_repo.get_all_users()
-    return users
+    return {"users": users}
+
 
 @router.post("/login", response_model=UserInResponse, name="auth:login")
 async def login(
