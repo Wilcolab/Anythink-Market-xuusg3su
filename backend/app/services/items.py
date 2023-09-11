@@ -3,7 +3,7 @@ from slugify import slugify
 from app.db.errors import EntityDoesNotExist
 from app.db.repositories.items import ItemsRepository
 from app.models.domain.items import Item
-from app.models.domain.users import User, UserRole
+from app.models.domain.users import User
 
 
 async def check_item_exists(items_repo: ItemsRepository, slug: str) -> bool:
@@ -20,4 +20,4 @@ def get_slug_for_item(title: str) -> str:
 
 
 def check_user_can_modify_item(item: Item, user: User) -> bool:
-    return user.role == UserRole.admin or item.seller.username == user.username
+    return item.seller.username == user.username

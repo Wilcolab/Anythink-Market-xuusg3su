@@ -2,7 +2,6 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-from app.models.domain.users import UserRole
 
 class JWTMeta(BaseModel):
     exp: datetime
@@ -11,4 +10,3 @@ class JWTMeta(BaseModel):
 
 class JWTUser(BaseModel):
     username: str
-    role: UserRole = UserRole.user
