@@ -28,14 +28,14 @@ router = APIRouter()
 
 @router.get("/", response_model=Dict[str, List[User]], name="users:get-all-users")
 async def retrieve_all_users(
-    user: User = Depends(get_current_user_authorizer(required=True)),
+    user: User = Depends(get_current_user_authorizer()),
     users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
 ) -> Dict[str, List[User]]:
-    if not user.role == UserRole.admin:
-        raise HTTPException(
-            status_code=HTTP_403_FORBIDDEN,
-            detail=strings.FORBIDDEN,
-        )
+    if user.role != UserRole.admin:
+        raise HTTPException(                                                                                        
+                status_code=HTTP_403_FORBIDDEN,
+                detail=strings.UNAUTHORIZED,
+            )
     users = await users_repo.get_all_users()
     return {"users": users}
 
