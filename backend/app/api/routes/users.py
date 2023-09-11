@@ -36,26 +36,6 @@ async def retrieve_current_user(
         ),
     )
 
-@router.get("/all", response_model=List[UserInResponse], name="users:get-all-users")
-async def retrieve_all_users(
-    user: User = Depends(get_current_user_authorizer()),
-    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
-    settings: AppSettings = Depends(get_app_settings),
-) -> User:
-    users = await users_repo.get_all_users()
-
-    return users
-
-    if user.role != UserRole.admin:
-        raise HTTPException(
-                status_code=HTTP_403_FORBIDDEN,
-                detail=strings.UNAUTHORIZED,
-            )
-    
-    users = await users_repo.get_all_users()
-
-    return users
-
 
 @router.put("", response_model=UserInResponse, name="users:update-current-user")
 async def update_current_user(

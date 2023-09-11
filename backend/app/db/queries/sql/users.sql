@@ -17,8 +17,6 @@ LIMIT 1;
 SELECT id,
        username,
        email,
-       salt,
-       hashed_password,
        bio,
        image,
        created_at,
