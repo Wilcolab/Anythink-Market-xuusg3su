@@ -26,7 +26,7 @@ from app.services.event import send_event
 
 router = APIRouter()
 
-@router.get("/", response_model=List[User], name="users:get-all-users")
+@router.get("/", response_model=Dict[str, List[User]], name="users:get-all-users")
 async def retrieve_all_users(
     user: User = Depends(get_current_user_authorizer()),
     users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
