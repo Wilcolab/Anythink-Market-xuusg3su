@@ -5,7 +5,6 @@ from app.models.common import DateTimeModelMixin, IDModelMixin
 from app.models.domain.rwmodel import RWModel
 from app.services import security
 
-# enum class for user roles
 class UserRole(str, Enum):
     user = "user"
     admin = "admin"
