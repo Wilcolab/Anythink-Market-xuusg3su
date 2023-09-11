@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from app.db.errors import EntityDoesNotExist
 from app.db.queries.queries import queries
@@ -7,12 +7,29 @@ from app.models.domain.users import User, UserInDB, UserRole
 
 
 class UsersRepository(BaseRepository):
+    async def get_all_users(self) -> List[UserInDB]:
+        user_rows = await queries.get_all_users(self.connection)
+        return [UserInDB(**user) for user in user_rows]
+    
     async def get_user_by_email(self, *, email: str) -> UserInDB:
         user_row = await queries.get_user_by_email(self.connection, email=email)
         if user_row:
             return UserInDB(**user_row)
 
         raise EntityDoesNotExist("user with email {0} does not exist".format(email))
+
+    async def get_user_by_username(self, *, username: str) -> UserInDB:
+        user_row = await queries.get_user_by_username(
+            self.connection,
+            username=username,
+        )
+        if user_row:
+            return UserInDB(**user_row)
+
+        raise EntityDoesNotExist(
+            "user with username {0} does not exist".format(username),
+        )
+    
 
     async def get_user_by_username(self, *, username: str) -> UserInDB:
         user_row = await queries.get_user_by_username(

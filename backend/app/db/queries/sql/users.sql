@@ -13,6 +13,19 @@ FROM users
 WHERE email = :email
 LIMIT 1;
 
+-- name: get-all-users
+SELECT id,
+       username,
+       email,
+       bio,
+       image,
+       created_at,
+       updated_at,
+       role
+FROM users
+LIMIT 100;
+
+
 
 -- name: get-user-by-username^
 SELECT id,
