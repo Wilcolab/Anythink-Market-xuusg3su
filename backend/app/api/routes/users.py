@@ -1,14 +1,12 @@
 from fastapi import APIRouter, Body, Depends, HTTPException
-from starlette.status import HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN
-from typing import List
-
+from starlette.status import HTTP_400_BAD_REQUEST
 
 from app.api.dependencies.authentication import get_current_user_authorizer
 from app.api.dependencies.database import get_repository
 from app.core.config import get_app_settings
 from app.core.settings.app import AppSettings
 from app.db.repositories.users import UsersRepository
-from app.models.domain.users import User, UserRole
+from app.models.domain.users import User
 from app.models.schemas.users import UserInResponse, UserInUpdate, UserWithToken
 from app.resources import strings
 from app.services import jwt
