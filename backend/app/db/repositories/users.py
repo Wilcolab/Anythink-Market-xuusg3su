@@ -1,16 +1,12 @@
-from typing import Optional, List
+from typing import Optional
 
 from app.db.errors import EntityDoesNotExist
 from app.db.queries.queries import queries
 from app.db.repositories.base import BaseRepository
-from app.models.domain.users import User, UserInDB, UserRole
+from app.models.domain.users import User, UserInDB
 
 
 class UsersRepository(BaseRepository):
-    async def get_all_users(self) -> List[UserInDB]:
-        user_rows = await queries.get_all_users(self.connection)
-        return [UserInDB(**user) for user in user_rows]
-    
     async def get_user_by_email(self, *, email: str) -> UserInDB:
         user_row = await queries.get_user_by_email(self.connection, email=email)
         if user_row:
@@ -36,9 +32,8 @@ class UsersRepository(BaseRepository):
         username: str,
         email: str,
         password: str,
-        role: UserRole = UserRole.user
     ) -> UserInDB:
-        user = UserInDB(username=username, email=email, role=role)
+        user = UserInDB(username=username, email=email)
         user.change_password(password)
 
         async with self.connection.transaction():
@@ -48,7 +43,6 @@ class UsersRepository(BaseRepository):
                 email=user.email,
                 salt=user.salt,
                 hashed_password=user.hashed_password,
-                role=user.role
             )
 
         return user.copy(update=dict(user_row))
