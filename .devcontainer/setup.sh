@@ -1,7 +1,7 @@
-WILCO_ID="`cat .wilco`"
-ENGINE_EVENT_ENDPOINT="${ENGINE_BASE_URL}/users/${WILCO_ID}/event"
-CODESPACE_BACKEND_HOST=$(curl -s "${ENGINE_BASE_URL}/api/v1/codespace/backendHost?codespaceName=${CODESPACE_NAME}&portForwarding=${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}" | jq -r '.codespaceBackendHost')
-CODESPACE_BACKEND_URL="https://${CODESPACE_BACKEND_HOST}"
+export WILCO_ID="`cat .wilco`"
+export ENGINE_EVENT_ENDPOINT="${ENGINE_BASE_URL}/users/${WILCO_ID}/event"
+export CODESPACE_BACKEND_HOST=$(curl -s "${ENGINE_BASE_URL}/api/v1/codespace/backendHost?codespaceName=${CODESPACE_NAME}&portForwarding=${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}" | jq -r '.codespaceBackendHost')
+export CODESPACE_BACKEND_URL="https://${CODESPACE_BACKEND_HOST}"
 
 nohup bash -c 'cd /wilco-agent && ENGINE_EVENT_ENDPOINT=${ENGINE_EVENT_ENDPOINT} node agent.js &'
 
