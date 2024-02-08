@@ -3,8 +3,6 @@ CODESPACE_BACKEND_HOST=$(curl -s "${ENGINE_BASE_URL}/api/v1/codespace/backendHos
 CODESPACE_BACKEND_URL="https://${CODESPACE_BACKEND_HOST}"
 export ENGINE_EVENT_ENDPOINT="${ENGINE_BASE_URL}/users/${WILCO_ID}/event"
 
-nohup bash -c 'cd /wilco-agent && ENGINE_EVENT_ENDPOINT=${ENGINE_EVENT_ENDPOINT} node agent.js &'
-
 # Update engine that codespace started for user
 curl -L -X POST "${ENGINE_EVENT_ENDPOINT}" -H "Content-Type: application/json" --data-raw "{ \"event\": \"github_codespace_started\" }"
 
